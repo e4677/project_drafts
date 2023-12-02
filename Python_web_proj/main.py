@@ -261,5 +261,3 @@ if __name__ == '__main__':
 # 1. yung format ng profile_picture sa db ay dapat uploads/barangayid/imagename
 # 2. yung conditionals sa accregistration na pag adult/student/others
 # 3. isasama sa accregistration yung address/medical
-
-

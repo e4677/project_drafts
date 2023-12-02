@@ -16,9 +16,11 @@
     
     <section class="profile-section"> 
         <div class="profile-info">
-            <h2>Name: Admin Name</h2>
-            <p>Admin ID: AD-000</p>
-            <p>Position: Administrator</p>
+        {% if 'admin_info' in session %}
+            <h2>Name: {{ session['admin_info'][1] }} {{ session['admin_info'][2] }}</h2>
+            <p>Admin ID: {{ session['admin_info'][0] }}</p>
+            <p>Position: {{ session['admin_info'][4] }}</p>
+        {% endif %}
         </div>
         <div class="sign-out-button">
             <button>Sign Out</button>

@@ -1,7 +1,7 @@
 # main.py
 
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file, flash, session
 from create import Create
 from read import Read
 from update import Update
@@ -16,8 +16,8 @@ from adult import Adult
 from student import Student
 from derived_tables import DerivedTables
 
-
 app = Flask(__name__)
+app.secret_key = 'BOSS'
 
 
 db_connector = DatabaseConnector(host="localhost", user="root", passwd="", database="Barangay")
@@ -116,6 +116,57 @@ def accregistration():
 
 ###############################################################################################
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        
+        if file.filename == '':
+            return 'No selected file'
+
+        if file:
+            upload_folder = "uploads"
+            if not os.path.exists(upload_folder):
+                os.makedirs(upload_folder)
+
+            filename = os.path.join(upload_folder, secure_filename(file.filename))
+            file.save(filename)
+            # Assuming filepath is the same as the filename
+            filepath = filename
+
+            # Here, id should be fetched from the request or somewhere else.
+            # I'll assume it's coming from a form field named 'id'
+            id = request.form.get('id')
+            create_instance.create_uploadfile(id, filename, filepath)
+            return 'File uploaded successfully!'
+
+    return render_template("uploadfile.html")
+@app.route("/upload_request_form")
+def upload_request_form():
+    return render_template("adminhome.html")
+@app.route("/upload_form")
+def upload_form():
+    return render_template("uploadfile.html")
+
+###############################################################################################
+
+#downloads
+@app.route('/download')
+def user():
+    cursor = db_connector.get_cursor()
+    cursor.execute("SELECT id, filename FROM files")
+    files = cursor.fetchall()
+    return render_template('downloadfile.html', files=files)
+
+@app.route('/download/<int:file_id>')
+def download(file_id):
+    cursor = db_connector.get_cursor()
+    cursor.execute("SELECT filepath FROM files WHERE id = %s", (file_id,))
+    filepath = cursor.fetchone()[0]
+    return send_file(filepath, as_attachment=True)
+
+###############################################################################################
+
 @app.route("/residentinfo", methods=["GET", "POST"])
 def residentinfo_route():
     return resident_instance.residentinfo(request)
@@ -180,8 +231,35 @@ def unemploymentinfo_route():
 def scholarshipinfo_route():
     return derived_tables_instance.scholarshipinfo()
 
+###############################################################################################
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Check if the username and password match admin credentials in the database
+        admin_info = read_instance.read_admininfo(username)
+
+        if admin_info:
+            # Assuming the password is the fifth column in the AdminInfo table
+            if password == admin_info[0][5]:  # Replace '5' with the appropriate index of the password column
+                session['username'] = username
+                return render_template('adminhome.html')  # Redirect to adminhome route
+
+        # If login fails, redirect back to the login page or show an error
+        return render_template('login.html', error='Invalid username or password')
+
+    return render_template('login.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# Note:
+# 1. yung format ng profile_picture sa db ay dapat uploads/barangayid/imagename
+# 2. yung conditionals sa accregistration na pag adult/student/others
+# 3. isasama sa accregistration yung address/medical
 
 

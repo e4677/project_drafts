@@ -246,6 +246,7 @@ def login():
             # Assuming the password is the fifth column in the AdminInfo table
             if password == admin_info[0][5]:  # Replace '5' with the appropriate index of the password column
                 session['username'] = username
+                session['admin_info'] = admin_info[0]
                 return render_template('adminhome.html')  # Redirect to adminhome route
 
         # If login fails, redirect back to the login page or show an error

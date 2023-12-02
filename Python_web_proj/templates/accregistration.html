@@ -126,26 +126,44 @@
         function toggleForms(category) {
             const adultInfo = document.getElementById('adultInfo');
             const studentInfo = document.getElementById('studentInfo');
-
+    
             // Reset display property
             adultInfo.style.display = 'none';
             studentInfo.style.display = 'none';
-
+    
             // Show the appropriate form based on the selected category
             if (category === 'Adult') {
                 adultInfo.style.display = 'block';
+                // Set required for adult fields
+                setRequired(adultInfo, true);
+                setRequired(studentInfo, false);
             } else if (category === 'Student') {
                 studentInfo.style.display = 'block';
+                // Set required for student fields
+                setRequired(adultInfo, false);
+                setRequired(studentInfo, true);
+            } else {
+                // If category is 'Others', make both not required
+                setRequired(adultInfo, false);
+                setRequired(studentInfo, false);
             }
         }
-
+    
+        function setRequired(container, isRequired) {
+            // Set required attribute for all input/select elements inside the container
+            const elements = container.querySelectorAll('input, select');
+            elements.forEach(element => {
+                element.required = isRequired;
+            });
+        }
+    
         document.getElementById('barangayid').addEventListener('input', function () {
-        // Update hidden fields with the same Barangay ID
-        document.getElementById('adult_barangayid').value = this.value;
-        document.getElementById('student_barangayid').value = this.value;
-        document.getElementById('address_barangayid').value = this.value;
-        document.getElementById('medical_barangayid').value = this.value;
-         });
+            // Update hidden fields with the same Barangay ID
+            document.getElementById('adult_barangayid').value = this.value;
+            document.getElementById('student_barangayid').value = this.value;
+            document.getElementById('address_barangayid').value = this.value;
+            document.getElementById('medical_barangayid').value = this.value;
+        });
     </script>
 </body>
 </html>

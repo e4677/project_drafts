@@ -233,6 +233,77 @@ def scholarshipinfo_route():
 
 ###############################################################################################
 
+@app.route("/admin_appointment", methods=["GET", "POST"])
+def get_data_from_db():
+    if 'adminid' not in session:
+        return render_template("adminappointment.html")
+
+    db_connector = DatabaseConnector()
+
+    try:
+        connection = db_connector.get_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        # Fetch data from appointment and residentinfo tables
+        query = """
+                SELECT r.barangayid, r.lastname, r.firstname, r.middlename, 
+                a.appointmentid, a.purpose, a.date, a.status
+                FROM residentinfo r
+                JOIN appointment a ON r.barangayid = a.barangayid;
+            """
+        cursor.execute(query)
+        data = cursor.fetchall()
+
+        return render_template("adminappointment.html", data=data)
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return None
+
+    finally:
+        # Close the cursor and database connection
+        cursor.close()
+        connection.close()
+
+def update_appointment_status(barangayid, new_status):
+    db_connector = DatabaseConnector()
+
+    try:
+        connection = db_connector.get_connection()
+        cursor = connection.cursor()
+
+        update_query = "UPDATE appointment SET status = %s WHERE barangayid = %s"
+        cursor.execute(update_query, (new_status, barangayid))
+
+        connection.commit()
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        connection.rollback()
+
+    finally:
+        # Close the cursor and database connection
+        cursor.close()
+        connection.close()
+
+def admin_appointment():
+    db_connector = DatabaseConnector()
+
+    if request.method == 'POST':
+        barangayid = request.form['barangayid']
+        
+        if 'approve' in request.form:
+            update_appointment_status(barangayid, 'Approved')
+        elif 'decline' in request.form:
+            update_appointment_status(barangayid, 'Declined')
+
+        return render_template('adminappointment.html')
+
+    data = get_data_from_db()
+    return render_template("adminappointment.html", data=data)
+
+###############################################################################################
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

@@ -10,11 +10,26 @@
     <div class="submain">
         <h3>HOUSEHOLD INCOME RECORD</h3>
         <form class="create-main" action="/incomerecord" method="post">
-            <input type="text" name="householdno" placeholder="Enter Household No." required />
+            <input type="text" name="householdno" placeholder="Enter Household No." required value="{{ householdno }}" />
             <input type="hidden" name="action" value="submit"> <!-- Updated action value -->
             <input type="submit" value="SUBMIT" />
         </form>
-        
+        <!-- Flash message display -->
+        <br>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <div class="flash-message error">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Check if there are records to display the table -->
+        {% if incomerecord %}
         <table class="read-main">
             <tr>
                 <th>Household No.</th>
@@ -27,6 +42,7 @@
                 </tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
 </body>
 </html>

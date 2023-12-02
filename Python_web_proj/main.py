@@ -15,10 +15,10 @@ from address import Address
 from adult import Adult
 from student import Student
 from derived_tables import DerivedTables
+from adminappointment import admin_appointment
 
 app = Flask(__name__)
 app.secret_key = 'BOSS'
-
 
 db_connector = DatabaseConnector(host="localhost", user="root", passwd="", database="Barangay")
 create_instance = Create(db_connector)
@@ -53,6 +53,7 @@ def home():
 
 @app.route("/accregistration", methods=["GET", "POST"])
 def accregistration():
+    print(request.form)
     if request.method == "POST":
         if "action" in request.form:
             if request.form["action"] == "create":
@@ -310,7 +311,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # Check if the username and password match admin credentials in the database
+        # Check if username and password match admin credentials in the database
         admin_info = read_instance.read_admininfo(username)
 
         if admin_info:

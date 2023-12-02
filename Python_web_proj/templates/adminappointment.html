@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Appointments</title>
+    <link rel="stylesheet" href="/static/functionstyles.css">
+</head>
+<body>
+    <div class="submain">
+        <h3>ADMIN APPOINTMENT MANAGEMENT</h3>
+        <table class="read-main">
+            <tr>
+                <th>Barangay ID</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Purpose</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for row in adminappointment %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>{{ row[5] }}</td>
+                    <td>{{ row[6] }}</td>
+                    <td>{{ row[7] }}</td>
+                    <td>
+                        <form action="/adminappointment" method="post">
+                            <input type="submit" name="edit" value="APPROVE">
+                            <input type="hidden" name="editbarangayid" value="{{ row[0] }}">
+                            <input type="hidden" name="editfirstname" value="{{ row[1] }}">
+                            <input type="hidden" name="editmiddlename" value="{{ row[2] }}">
+                            <input type="hidden" name="editlastname" value="{{ row[3] }}">
+                            <input type="hidden" name="editpurpose" value="{{ row[4] }}">
+                            <input type="hidden" name="editdate" value="{{ row[5] }}">
+                            <input type="hidden" name="editdate" value="{{ row[6] }}">
+                            <input type="hidden" name="action" value="approve">
+                        </form>
+                        <form action='/adminappointment' method="post" >
+                            <input type="submit" name="delete" value="DECLINE">
+                            <input type="hidden" name="deletebarangayid" value="{{ row[1] }}">
+                            <input type="submit" name="action" value="decline">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

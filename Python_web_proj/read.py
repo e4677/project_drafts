@@ -95,3 +95,12 @@ class Read(DatabaseConnector):
         self.mycursor.execute(query)
         results = self.mycursor.fetchall()
         return results
+
+    def read_admininfo(self, username):
+        query = """
+                SELECT * FROM AdminInfo WHERE AdminID = %s
+                """
+        values = (username,)
+        self.mycursor.execute(query, values)
+        results = self.mycursor.fetchall()
+        return results

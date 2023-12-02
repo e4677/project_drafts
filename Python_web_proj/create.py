@@ -47,3 +47,9 @@ class Create:
         values = (barangayid, password, email)
         self.db.execute_query(query, values)
         self.db.commit()
+
+    def create_uploadfile(self, id, filename, filepath):
+        query = "INSERT INTO files (filename, filepath) VALUES (%s, %s)"
+        values = (filename, filepath)
+        self.db.execute_query(query, values)
+        self.db.commit()

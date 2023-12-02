@@ -29,7 +29,7 @@ class Delete:
         self.db.commit()
 
     def delete_adultinfo(self, adultid):
-        query = "DELETE FROM adultinfo WHERE AdultID = %s"
+        query = "DELETE FROM adultinfo WHERE EmployeeID = %s"
         value = (adultid,)
         self.db.execute_query(query, value)
         self.db.commit()

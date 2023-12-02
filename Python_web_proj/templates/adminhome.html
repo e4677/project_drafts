@@ -71,7 +71,12 @@
                 <form id="accRegister" action="/accregistration" method="post">
                     <a href="#" onclick="document.getElementById('accRegister').submit();">Account Registration</a>
                 </form>
-                <form action="#" method="post"><a href="#upload-request-forms">Upload Request Forms</a></form>
+                <form id="uploadForm" action="/upload_form" method="get">
+                    <a href="#" onclick="document.getElementById('uploadForm').submit();">Upload Request Forms</a>
+                </form>
+                <form id="downloadForm" action="/download" method="get">
+                    <a href="#" onclick="document.getElementById('downloadForm').submit();">Download Forms</a>
+                </form>
                 <form action="#" method="post"><a href="#appointment-management">Appointment Management</a></form>
                 <form id="caseForm" action="/caseinfo" method="post">
                     <a href="#" onclick="document.getElementById('caseForm').submit();">Barangay Case Record</a>

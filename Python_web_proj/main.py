@@ -35,7 +35,7 @@ address_instance = Address(read_instance, delete_instance, update_instance)
 adult_instance = Adult(read_instance, delete_instance, update_instance)
 student_instance = Student(read_instance, delete_instance, update_instance)
 derived_tables_instance = DerivedTables(read_instance)
-
+appointment_instance = Appointment(read_instance, delete_instance, update_instance)
 
 def save_file(file):
     upload_folder = "uploads"

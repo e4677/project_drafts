@@ -96,17 +96,6 @@ class Update:
         self.db.execute_query(query, values)
         self.db.commit()
 
-    def update_appointmentstatus(self, barangayid, status):
-        query = """
-                UPDATE appointment 
-                SET 
-                    status = %s 
-                WHERE barangayid = %s
-                """
-        values = (status, barangayid)
-        self.db.execute_query(query, values)
-        self.db.commit()
-
     def update_appointment(self, appointmentid, status):
         query = """
                 UPDATE appointment

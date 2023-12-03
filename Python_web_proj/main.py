@@ -132,11 +132,8 @@ def upload_file():
 
             filename = os.path.join(upload_folder, secure_filename(file.filename))
             file.save(filename)
-            # Assuming filepath is the same as the filename
             filepath = filename
 
-            # Here, id should be fetched from the request or somewhere else.
-            # I'll assume it's coming from a form field named 'id'
             id = request.form.get('id')
             create_instance.create_uploadfile(id, filename, filepath)
             return 'File uploaded successfully!'
@@ -270,26 +267,23 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # Check if username and password match admin credentials in the database
         admin_info = read_instance.read_admininfo(username)
+        user_info = read_instance.read_userinfo(username)
 
         if admin_info:
-            # Assuming the password is the fifth column in the AdminInfo table
-            if password == admin_info[0][5]:  # Replace '5' with the appropriate index of the password column
+            if password == admin_info[0][5]:
                 session['username'] = username
                 session['admin_info'] = admin_info[0]
-                return render_template('adminhome.html')  # Redirect to adminhome route
+                return render_template('adminhome.html')
+        elif user_info:
+            if password == user_info[0][2]:
+                session['username'] = username
+                session['user_info'] = user_info[0]
+                return render_template('#userhome.html')
 
-        # If login fails, redirect back to the login page or show an error
         return render_template('login.html', error='Invalid username or password')
 
     return render_template('login.html')
 
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-# Note:
-# 1. yung format ng profile_picture sa db ay dapat uploads/barangayid/imagename
-# 2. yung conditionals sa accregistration na pag adult/student/others
-# 3. isasama sa accregistration yung address/medical

@@ -104,3 +104,14 @@ class Read(DatabaseConnector):
         self.mycursor.execute(query, values)
         results = self.mycursor.fetchall()
         return results
+
+    def read_appointment(self):
+        query = """
+                    SELECT r.barangayid, a.appointmentid, r.lastname, r.firstname, r.middlename, 
+                    a.purpose, a.date, a.status
+                    FROM residentinfo r
+                    JOIN appointment a ON r.barangayid = a.barangayid;
+                """
+        self.mycursor.execute(query)
+        results = self.mycursor.fetchall()
+        return results

@@ -17,7 +17,7 @@ from student import Student
 from derived_tables import DerivedTables
 from adminappointment import adminappointment
 from appointment import Appointment
-from registration import save_file, handle_accregistration
+from registration import Registration
 
 app = Flask(__name__)
 app.secret_key = 'BOSS'
@@ -35,13 +35,14 @@ address_instance = Address(read_instance, delete_instance, update_instance)
 adult_instance = Adult(read_instance, delete_instance, update_instance)
 student_instance = Student(read_instance, delete_instance, update_instance)
 derived_tables_instance = DerivedTables(read_instance)
-appointment_instance = Appointment(read_instance, delete_instance, update_instance)
-
+registration_handler = Registration(create_instance)
 
 
 @app.route("/accregistration", methods=["GET", "POST"])
 def accregistration_route():
-    return handle_accregistration(request, create_instance)
+    if registration_handler.handle_accregistration(request):
+        return redirect(url_for('accregistration'))
+    return render_template("accregistration.html")
 
 ###############################################################################################
 

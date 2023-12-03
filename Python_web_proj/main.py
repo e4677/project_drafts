@@ -16,6 +16,7 @@ from adult import Adult
 from student import Student
 from derived_tables import DerivedTables
 from adminappointment import adminappointment
+from appointment import Appointment
 
 app = Flask(__name__)
 app.secret_key = 'BOSS'
@@ -33,6 +34,7 @@ address_instance = Address(read_instance, delete_instance, update_instance)
 adult_instance = Adult(read_instance, delete_instance, update_instance)
 student_instance = Student(read_instance, delete_instance, update_instance)
 derived_tables_instance = DerivedTables(read_instance)
+appointment_instance = Appointment(read_instance, delete_instance, update_instance)
 
 def save_file(file):
     upload_folder = "uploads"
@@ -164,6 +166,14 @@ def download(file_id):
     return send_file(filepath, as_attachment=True)
 
 ###############################################################################################
+
+@app.route("/appointment", methods=["GET", "POST"])
+def appointment():
+    return appointment_instance.appointment(request)
+
+@app.route("/updateAppointment", methods=["GET", "POST"])
+def updateAppointment():
+    return appointment_instance.updateAppointment(request)
 
 @app.route("/residentinfo", methods=["GET", "POST"])
 def residentinfo_route():

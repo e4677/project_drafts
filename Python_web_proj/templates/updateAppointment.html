@@ -39,11 +39,12 @@
             <h3>UPDATE TAB:</h3>
             <input type="text" name="updateappointmentid" placeholder="Appointment ID" value="{{ editappointmentid }}" required />
             <select name="updatestatus" required>
-                <option value="">Appointment Status</option>
-                <option value="Approved" {% if editemploymentstatus == 'Approved' %}selected{% endif %}>Approved</option>
-                <option value="Declined" {% if editemploymentstatus == 'Declined' %}selected{% endif %}>Declined</option>
-                <option value="Completed" {% if editemploymentstatus == 'Completed' %}selected{% endif %}>Completed</option>
-            </select>
+                <option value="">Select Appointment Status</option>
+                <option value="Pending" {% if editstatus == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="Approved" {% if editstatus == 'Approved' %}selected{% endif %}>Approved</option>
+                <option value="Declined" {% if editstatus == 'Declined' %}selected{% endif %}>Declined</option>
+                <option value="Completed" {% if editstatus == 'Completed' %}selected{% endif %}>Completed</option>
+            </select>            
             <input type="submit" name="update" value="UPDATE" />
             <input type="hidden" name="updateappointmentid" value="{{ editappointmentid }}" />
         </form>

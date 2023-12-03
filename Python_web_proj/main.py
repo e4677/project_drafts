@@ -233,31 +233,12 @@ def scholarshipinfo_route():
 
 @app.route("/adminappointment", methods=["GET", "POST"])
 def get_data_from_db():
-    read_instance = Read(db_connector)
     data = read_instance.read_appointment()
     return render_template("adminappointment.html", data=data)
 
-@app.route("/updateappointment", methods=["GET", "POST"])
-def update_appointment_status(barangayid, new_status):
-    def update_appointment_status(barangayid, status):
-    return resident_instance.updateAppointmentStatus(request)
-        
-@app.route("/adminappoint", methods=["GET", "POST"])
-def adminappointment():
-    db_connector = DatabaseConnector()
-
-    if request.method == 'POST':
-        barangayid = request.form['barangayid']
-        
-        if 'approve' in request.form:
-            update_appointment_status(barangayid, 'Approved')
-        elif 'decline' in request.form:
-            update_appointment_status(barangayid, 'Declined')
-
-        return render_template('adminappointment.html')
-
-    data = get_data_from_db()
-    return render_template("adminappointment.html", data=data)
+@app.route("/updateAppointment", methods=["GET", "POST"])
+def updateappointmentstatus():
+    return adminappointment_instance.updateAppointmentStatus(request)
 
 ###############################################################################################
 

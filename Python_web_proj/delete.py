@@ -39,5 +39,11 @@ class Delete:
         value = (studentid,)
         self.db.execute_query(query, value)
         self.db.commit()
+        
+    def delete_appointment(self, appointmentid):
+        query = "DELETE FROM appointment WHERE AppointmentID = %s"
+        value = (appointmentid,)
+        self.db.execute_query(query, value)
+        self.db.commit()
 
     

@@ -241,14 +241,7 @@ def scholarshipinfo_route():
 
 ###############################################################################################
 
-@app.route("/adminappointment", methods=["GET", "POST"])
-def get_data_from_db():
-    data = read_instance.read_appointment()
-    return render_template("adminappointment.html", data=data)
 
-@app.route("/updateAppointment", methods=["GET", "POST"])
-def updateappointmentstatus():
-    return adminappointment_instance.updateAppointmentStatus(request)
 
 ###############################################################################################
 

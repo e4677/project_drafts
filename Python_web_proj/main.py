@@ -47,9 +47,7 @@ def save_file(file):
     return filename
 
 
-@app.route("/admin")
-def home():
-    return render_template("adminhome.html")
+
 
 ###############################################################################################
 
@@ -166,6 +164,10 @@ def download(file_id):
     return send_file(filepath, as_attachment=True)
 
 ###############################################################################################
+
+@app.route("/admin")
+def home():
+    return render_template("adminhome.html")
 
 @app.route("/appointment", methods=["GET", "POST"])
 def appointment():

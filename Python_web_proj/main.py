@@ -234,65 +234,24 @@ def scholarshipinfo_route():
 
 ###############################################################################################
 
-@app.route("/admin_appointment", methods=["GET", "POST"])
+@app.route("/adminappointment", methods=["GET", "POST"])
 def get_data_from_db():
-    if 'adminid' not in session:
-        return render_template("adminappointment.html")
+    read_instance = Read(db_connector)
+    data = read_instance.read_appointment()
+    return render_template("adminappointment.html", data=data)
 
-    db_connector = DatabaseConnector()
-
-    try:
-        connection = db_connector.get_connection()
-        cursor = connection.cursor(dictionary=True)
-
-        # Fetch data from appointment and residentinfo tables
-        query = """
-                SELECT r.barangayid, r.lastname, r.firstname, r.middlename, 
-                a.appointmentid, a.purpose, a.date, a.status
-                FROM residentinfo r
-                JOIN appointment a ON r.barangayid = a.barangayid;
-            """
-        cursor.execute(query)
-        data = cursor.fetchall()
-
-        return render_template("adminappointment.html", data=data)
-
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        return None
-
-    finally:
-        # Close the cursor and database connection
-        cursor.close()
-        connection.close()
-
+@app.route("/updateappointment", methods=["GET", "POST"])
 def update_appointment_status(barangayid, new_status):
-    db_connector = DatabaseConnector()
-
-    try:
-        connection = db_connector.get_connection()
-        cursor = connection.cursor()
-
-        update_query = "UPDATE appointment SET status = %s WHERE barangayid = %s"
-        cursor.execute(update_query, (new_status, barangayid))
-
-        connection.commit()
-
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        connection.rollback()
-
-    finally:
-        # Close the cursor and database connection
-        cursor.close()
-        connection.close()
-
-def admin_appointment():
+    def update_appointment_status(barangayid, status):
+    return resident_instance.updateAppointmentStatus(request)
+        
+@app.route("/adminappoint", methods=["GET", "POST"])
+def adminappointment():
     db_connector = DatabaseConnector()
 
     if request.method == 'POST':
         barangayid = request.form['barangayid']
-
+        
         if 'approve' in request.form:
             update_appointment_status(barangayid, 'Approved')
         elif 'decline' in request.form:
